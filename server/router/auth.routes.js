@@ -3,81 +3,81 @@ import { to } from 'await-to-js'
 import { verifyPassword, hashPassword } from '../auth/utils'
 import { login } from '../auth/strategies/jwt'
 import { createUser, getUserByEmail } from '../database/user'
+
 const router = express.Router()
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body
-  const [err, user] = await to(getUserByEmail(email))
-  const authenticationError = () => {
+    const { email, password } = req.body
+    const [err, user] = await to(getUserByEmail(email))
+
+    const authenticationError = () => {
+        return res.status(500).json({ success: false, data: 'Authentication error!' })
+    }
+
+    if (!(await verifyPassword(password, user.password))) {
+        console.error('Passwords do not match')
+        return authenticationError()
+    }
+
+    const [loginErr, token] = await to(login(req, user))
+
+    if (loginErr) {
+        console.error('Log in error', loginErr)
+        return authenticationError()
+    }
+
     return res
-      .status(500)
-      .json({ success: false, data: "Authentication error!" })
-  }
-
-  if (!(await verifyPassword(password, user.password))) {
-    console.error('Passwords do not match')
-    return authenticationError()
-  }
-
-  const [loginErr, token] = await to(login(req, user))
-
-  if (loginErr) {
-    console.error('Log in error', loginErr)
-    return authenticationError()
-  }
-
-  return res
-    .status(200)
-    .cookie('jwt', token, {
-      httpOnly: true
-    })
-    .json({
-      success: true,
-      data: '/'
-    })
+        .status(200)
+        .cookie('jwt', token, {
+            httpOnly: true
+        })
+        .json({
+            success: true,
+            data: '/'
+        })
 })
 
 router.post('/register', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body
+    const { firstName, lastName, email, password } = req.body
 
-  if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
-    return res.status(500).json({ success: false, data: 'Enter a valid email address.' })
-  } else if (password.length < 8 || password.length > 99) {
-    return res.status(500).json({
-      success: false,
-      data: 'Password must be at least 8 characters.'
-    })
-  }
+    if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
+        return res.status(500).json({ success: false, data: 'Enter a valid email address.' })
+    } else if (password.length < 6 || password.length > 99) {
+        return res.status(500).json({
+            success: false,
+            data: 'Password must be 6 or more characters.'
+        })
+    }
 
-  let [err, user] = await to(
-    createUser({
-      firstName,
-      lastName,
-      email,
-      password: await hashPassword(password)
-    })
-  )
+    let [err, user] = await to(
+        createUser({
+            firstName,
+            lastName,
+            email,
+            password: await hashPassword(password)
+        })
+    )
 
-  if (err) {
-    return res.status(500).json({ success: false, data: 'Email is already taken' })
-  }
+    if (err) {
+        return res.status(500).json({ success: false, data: 'Email is already taken' })
+    }
 
-  const [loginErr, token] = await to(login(req, user))
+    const [loginErr, token] = await to(login(req, user))
 
-  if (loginErr) {
-    console.error(loginErr)
-    return res.status(500).json({ success: false, data: 'Authentication error!' })
-  }
-  // log user in after registration
-  return res
-    .status(200)
-    .cookie('jwt', token, {
-      httpOnly: true
-    })
-    .json({
-      success: true,
-      data: '/'
-    })
+    if (loginErr) {
+        console.error(loginErr)
+        return res.status(500).json({ success: false, data: 'Authentication error!' })
+    }
+
+    return res
+        .status(200)
+        .cookie('jwt', token, {
+            httpOnly: true
+        })
+        .json({
+            success: true,
+            data: '/'
+        })
 })
 
 export default router

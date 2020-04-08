@@ -15,7 +15,6 @@ const strategy = () => {
     }
 
     const verifyCallback = async (req, jwtPayload, cb) => {
-        
         const [err, user] = await to(getUserById(jwtPayload.data._id))
 
         if (err) {
@@ -30,7 +29,6 @@ const strategy = () => {
 
 const login = (req, user) => {
     return new Promise((resolve, reject) => {
-        
         req.login(user, { session: false }, err => {
             if (err) {
                 return reject(err)

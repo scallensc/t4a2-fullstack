@@ -1,4 +1,5 @@
-require("dotenv").config()
+require('dotenv').config()
+
 import express from 'express'
 import next from 'next'
 import { urlencoded, json } from 'body-parser'
@@ -6,7 +7,7 @@ import cookieParser from 'cookie-parser'
 import passport from 'passport'
 
 import router from './router'
-import { connectToDatabase } from "./database/connection"
+import { connectToDatabase } from './database/connection'
 import { initialiseAuthentication } from './auth'
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -39,7 +40,6 @@ nextApp.prepare().then(async () => {
 
     app.listen(port, err => {
         if (err) throw err
-        console.log(`> Ready on ${process.env.SERVER_URL}`)
-        console.log(`${process.env.NODE_ENV}`)
+        console.log(`> Ready on localhost:${port}`)
     })
 })

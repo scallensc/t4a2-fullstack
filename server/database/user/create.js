@@ -1,6 +1,5 @@
 import { UserModel } from '../schema'
 
-// craete user function, adding provider info to possibly add oauth eg. facebook/google later
 async function createUser({
     firstName,
     lastName,
@@ -13,10 +12,10 @@ async function createUser({
         const user = await UserModel.findOne({ email })
 
         if (user) {
-            return reject('Email is already in use')
+            reject('Email is already in use')
         }
 
-        return resolve(
+        resolve(
             await UserModel.create({
                 providerId,
                 provider,
