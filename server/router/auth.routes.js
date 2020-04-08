@@ -1,5 +1,8 @@
 import express from 'express'
-
+import { to } from 'await-to-js'
+import { verifyPassword, hashPassword } from '../auth/utils'
+import { login } from '../auth/strategies/jwt'
+import { createUser, getUserByEmail } from '../database/user'
 const router = express.Router()
 
 router.post('/login', async (req, res) => {
@@ -11,7 +14,44 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body
 
-  return res.status(200).json({ success: true, data: null })
+  if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
+    return res.status(500).json({ success: false, data: 'Enter a valid email address.' })
+  } else if (password.length < 8 || password.length > 99) {
+    return res.status(500).json({
+      success: false,
+      data: 'Password must be at least 8 characters.'
+    })
+  }
+
+  let [err, user] = await to(
+    createUser({
+      firstName,
+      lastName,
+      email,
+      password: await hashPassword(password)
+    })
+  )
+
+  if (err) {
+    return res.status(500).json({ success: false, data: 'Email is already taken' })
+  }
+
+  const [loginErr, token] = await to(login(req, user))
+
+  if (loginErr) {
+    console.error(loginErr)
+    return res.status(500).json({ success: false, data: 'Authentication error!' })
+  }
+
+  return res
+    .status(200)
+    .cookie('jwt', token, {
+      httpOnly: true
+    })
+    .json({
+      success: true,
+      data: '/'
+    })
 })
 
 export default router

@@ -1,5 +1,7 @@
 import passport from 'passport'
+import jwt from 'jsonwebtoken'
 import { UserModel } from '../database/schema'
+import bcrypt from 'bcrypt'
 
 const setup = () => {
     passport.serializeUser((user, done) => done(null, user._id))
@@ -14,4 +16,23 @@ const setup = () => {
     })
 }
 
-export { setup }
+// issue token with 7 day expiry
+const signToken = (user) => {
+    return jwt.sign({ data: user }, process.env.JWT_SECRET, {
+        expiresIn: 604800
+    })
+}
+
+// generate salt, hash password
+const hashPassword = async password => {
+    if (!password) {
+        throw new Error('Password was not provided')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    return await bcrypt.hash(password, salt)
+}
+
+
+
+export { setup, signToken, hashPassword }
