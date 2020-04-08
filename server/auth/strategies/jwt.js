@@ -16,6 +16,13 @@ const strategy = () => {
 
     const verifyCallback = async (req, jwtPayload, cb) => {
         // TODO
+        const [err, user] = await to(getUserById(jwtPayload.data._id))
+
+        if (err) {
+            return cb(err)
+        }
+        req.user = user
+        return cb(null, user)
     }
 
     passport.use(new JWTStrategy(strategyOptions, verifyCallback))
