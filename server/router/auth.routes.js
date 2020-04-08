@@ -7,8 +7,34 @@ const router = express.Router()
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
+  const [err, user] = await to(getUserByEmail(email))
+  const authenticationError = () => {
+    return res
+      .status(500)
+      .json({ success: false, data: "Authentication error!" })
+  }
 
-  return res.status(200).json({ success: true, data })
+  if (!(await verifyPassword(password, user.password))) {
+    console.error('Passwords do not match')
+    return authenticationError()
+  }
+
+  const [loginErr, token] = await to(login(req, user))
+
+  if (loginErr) {
+    console.error('Log in error', loginErr)
+    return authenticationError()
+  }
+
+  return res
+    .status(200)
+    .cookie('jwt', token, {
+      httpOnly: true
+    })
+    .json({
+      success: true,
+      data: '/'
+    })
 })
 
 router.post('/register', async (req, res) => {
@@ -42,7 +68,7 @@ router.post('/register', async (req, res) => {
     console.error(loginErr)
     return res.status(500).json({ success: false, data: 'Authentication error!' })
   }
-
+  // log user in after registration
   return res
     .status(200)
     .cookie('jwt', token, {
