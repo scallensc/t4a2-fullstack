@@ -16,6 +16,7 @@ import { ROLES } from '../utils'
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const handle = nextApp.getRequestHandler()
+var cors = require('cors')
 
 const port = (process.env.PORT || 3000)
 
@@ -30,6 +31,8 @@ nextApp.prepare().then(async () => {
 
     router(app)
     initialiseAuthentication(app)
+
+    app.use(cors())
 
     app.get(
         '/admin-dashboard',
