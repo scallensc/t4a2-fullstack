@@ -2,6 +2,6 @@ const { parsed: localEnv } = require('dotenv').config()
 
 module.exports = {
   env: {
-    BASE_API_URL: 'https://localhost:$PORT/api'
+    BASE_API_URL: localEnv.BASE_API_URL
   }
 }
