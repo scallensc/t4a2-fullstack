@@ -8,6 +8,9 @@ import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import { server } from '../utils'
 
+import { GoogleLoginButton } from '../components/GoogleLoginButton'
+import { FacebookLoginButton } from '../components/FacebookLoginButton'
+
 const useStyles = makeStyles(theme => ({
     layout: {
         display: 'flex',
@@ -67,10 +70,10 @@ const LoginForm = () => {
                 >
                     <Typography component="h1" variant="h4" gutterBottom>
                         Login
-          </Typography>
+                    </Typography>
                     <Typography component="p" gutterBottom>
                         Log in to your account dashboard
-          </Typography>
+                    </Typography>
                 </Box>
                 <form method="post" className={classes.form} onSubmit={handleSubmit} noValidate>
                     <TextField
@@ -111,6 +114,11 @@ const LoginForm = () => {
                             )}
                             {submitting ? 'Signing in...' : 'Sign In'}
                         </Button>
+                        <Typography variant="overline" display="block" gutterBottom>
+                            Social Login Providers
+                        </Typography>
+                        <GoogleLoginButton />
+                        <FacebookLoginButton />
                     </Box>
                 </form>
             </Paper>

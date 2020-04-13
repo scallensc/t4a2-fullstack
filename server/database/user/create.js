@@ -6,7 +6,8 @@ async function createUser({
     email,
     password,
     providerId,
-    provider
+    provider,
+    role
 }) {
     return new Promise(async (resolve, reject) => {
         const user = await UserModel.findOne({ email })
@@ -22,7 +23,8 @@ async function createUser({
                 firstName,
                 lastName,
                 email,
-                password
+                password,
+                role
             })
         )
     })

@@ -1,6 +1,6 @@
 import express from 'express'
 import { to } from 'await-to-js'
-import { verifyPassword, hashPassword } from '../auth/utils'
+import { verifyPassword, hashPassword, getRedirectUrl } from '../auth/utils'
 import { login } from '../auth/strategies/jwt'
 import { createUser, getUserByEmail } from '../database/user'
 
@@ -12,6 +12,11 @@ router.post('/login', async (req, res) => {
 
     const authenticationError = () => {
         return res.status(500).json({ success: false, data: 'Authentication error!' })
+    }
+
+    if (!(await getUserByEmail(email))) {
+        console.error('Email not found')
+        return authenticationError()
     }
 
     if (!(await verifyPassword(password, user.password))) {
@@ -33,7 +38,7 @@ router.post('/login', async (req, res) => {
         })
         .json({
             success: true,
-            data: '/'
+            data: getRedirectUrl(user.role)
         })
 })
 
@@ -42,10 +47,10 @@ router.post('/register', async (req, res) => {
 
     if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
         return res.status(500).json({ success: false, data: 'Enter a valid email address.' })
-    } else if (password.length < 6 || password.length > 99) {
+    } else if (password.length < 5 || password.length > 20) {
         return res.status(500).json({
             success: false,
-            data: 'Password must be 6 or more characters.'
+            data: 'Password must be between 5 and 20 characters.'
         })
     }
 
@@ -76,7 +81,7 @@ router.post('/register', async (req, res) => {
         })
         .json({
             success: true,
-            data: '/'
+            data: getRedirectUrl(user.role)
         })
 })
 

@@ -6,7 +6,11 @@ const pipe = (...functions) => args => functions.reduce((arg, fn) => fn(arg), ar
 const initialiseAuthentication = app => {
     utils.setup()
 
-    pipe(strategies.JWTStrategy)(app)
+    pipe(
+        strategies.FacebookStrategy,
+        strategies.GoogleStrategy,
+        strategies.JWTStrategy
+    )(app)
 }
 
 export { utils, initialiseAuthentication, strategies }

@@ -16,6 +16,15 @@ const Home = () => (
             <div className="row">
                 <a href="/login">Go to login page</a>
             </div>
+            <div className="row">
+                <a href="/blog">test material UI page</a>
+            </div>
+            <div className="row">
+                <a href="/customer-dashboard">Customer dashboard</a>
+            </div>
+            <div className="row">
+                <a href="/admin-dashboard">Admin dashboard</a>
+            </div>
         </div>
     </div>
 )

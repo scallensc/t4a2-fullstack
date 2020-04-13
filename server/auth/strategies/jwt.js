@@ -20,6 +20,7 @@ const strategy = () => {
         if (err) {
             return cb(err)
         }
+
         req.user = user
         return cb(null, user)
     }
