@@ -15,7 +15,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const handle = nextApp.getRequestHandler()
 
-const port = 3000
+const port = process.env.PORT
 
 nextApp.prepare().then(async () => {
     const app = express()
