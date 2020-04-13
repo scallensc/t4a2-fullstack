@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "next build",
-    "start": "nodemon"
+    "start": "nodemon ./bin/www"
   },
   "engines": {
     "node": "13.x"
