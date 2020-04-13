@@ -8,10 +8,10 @@ import { urlencoded, json } from 'body-parser'
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
 
-import authrouter from './router'
-import { connectToDatabase } from './database/connection'
-import { initialiseAuthentication, utils } from './auth'
-import { ROLES } from '../utils'
+import authrouter from './server/router'
+import { connectToDatabase } from './server/database/connection'
+import { initialiseAuthentication, utils } from './server/auth'
+import { ROLES } from './utils'
 
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })

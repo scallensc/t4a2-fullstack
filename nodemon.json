@@ -1,5 +1,5 @@
 {
   "watch": ["server"],
-  "exec": "NODE_ENV=development babel-node server/index.js",
+  "exec": "NODE_ENV=production babel-node app.js",
   "ext": "js"
 }

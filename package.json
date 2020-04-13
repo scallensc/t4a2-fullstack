@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "build": "nodemon",
+    "build": "next build",
     "start": "nodemon"
   },
   "engines": {
-    "node": "12.x"
+    "node": "13.x"
   },
   "dependencies": {
     "@material-ui/core": "^4.4.3",
