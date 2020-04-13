@@ -16,6 +16,8 @@ const strategy = app => {
         profileFields: ['id', 'displayName', 'name', 'emails']
     }
 
+    console.log(`FB Callback URL: ${process.env.SERVER_API_URL}/auth/facebook/callback`)
+
     const verifyCallback = async (accessToken, refreshToken, profile, done) => {
         let [err, user] = await to(getUserByProviderId(profile.id))
         if (err || user) {
@@ -34,7 +36,6 @@ const strategy = app => {
                 role: ROLES.Customer
             })
         )
-
         return done(createdError, createdUser)
     }
 

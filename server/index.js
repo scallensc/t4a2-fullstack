@@ -39,7 +39,8 @@ nextApp.prepare().then(async () => {
         passport.authenticate('jwt', { failureRedirect: '/login' }),
         utils.checkIsInRole(ROLES.Admin),
         (req, res) => {
-            return handle(req, res)
+            console.log(handle(req, res))
+            return handle(req.body, res)
         }
     )
 
@@ -48,11 +49,13 @@ nextApp.prepare().then(async () => {
         passport.authenticate('jwt', { failureRedirect: '/login' }),
         utils.checkIsInRole(ROLES.Customer),
         (req, res) => {
+            console.log(req.body, res)
             return handle(req, res)
         }
     )
 
     app.get('*', (req, res) => {
+        console.log(req.body, res)
         return handle(req, res)
     })
 

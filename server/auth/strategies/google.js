@@ -15,6 +15,8 @@ const strategy = app => {
         callbackURL: `${process.env.SERVER_API_URL}/auth/google/callback`
     }
 
+    console.log(`Google callback URL: ${process.env.SERVER_API_URL}/auth/google/callback`)
+
     const verifyCallback = async (accessToken, refreshToken, profile, done) => {
         let [err, user] = await to(getUserByProviderId(profile.id))
         if (err || user) {
@@ -36,7 +38,6 @@ const strategy = app => {
                 role: ROLES.Customer
             })
         )
-
         return done(createdError, createdUser)
     }
 
