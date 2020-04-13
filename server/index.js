@@ -53,7 +53,7 @@ nextApp.prepare().then(async () => {
 
     await connectToDatabase()
 
-    app.listen(port, err => {
+    app.listen(port, "0.0.0.0", err => {
         if (err) throw err
         console.log(`> Ready on localhost:${port}`)
     })
