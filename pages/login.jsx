@@ -8,9 +8,7 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { server } from '../utils'
-
 import CircularProgress from '@material-ui/core/CircularProgress'
-
 import { GoogleLoginButton } from '../components/GoogleLoginButton'
 import { FacebookLoginButton } from '../components/FacebookLoginButton'
 

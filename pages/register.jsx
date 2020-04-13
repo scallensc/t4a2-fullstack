@@ -8,6 +8,9 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { server } from '../utils'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { GoogleLoginButton } from '../components/GoogleLoginButton'
+import { FacebookLoginButton } from '../components/FacebookLoginButton'
 
 const useStyles = makeStyles(theme => ({
     layout: {
@@ -139,6 +142,11 @@ const Register = () => {
                             )}
                             {submitting ? 'Registering...' : 'Register'}
                         </Button>
+                        <Typography variant="overline" display="block" gutterBottom>
+                            Or, register and login via social providers
+                        </Typography>
+                        <GoogleLoginButton />
+                        <FacebookLoginButton />
                     </Box>
                 </form>
             </Paper>
