@@ -47,15 +47,6 @@ nextApp.prepare().then(async () => {
         }
     )
 
-    app.get(
-        '/',
-        passport.authenticate('jwt', { failureRedirect: '/login' }),
-        utils.checkIsInRole(ROLES.Admin, ROLES.Customer),
-        (req, res) => {
-            return handle(req, res)
-        }
-    )
-
     app.get('*', (req, res) => {
         return handle(req, res)
     })
