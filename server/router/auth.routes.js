@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import express from 'express'
 import { to } from 'await-to-js'
 import { verifyPassword, hashPassword, getRedirectUrl } from '../auth/utils'
