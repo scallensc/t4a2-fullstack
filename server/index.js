@@ -55,7 +55,7 @@ nextApp.prepare().then(async () => {
 
     await connectToDatabase()
 
-    app.listen(port, "0.0.0.0", err => {
+    app.listen(port, err => {
         if (err) throw err
         console.log(`> Ready on localhost:${port}`)
     })
