@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { server } from '../utils'
 
-// import CircularProgress from '@material-ui/core/CircularProgress'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // import { GoogleLoginButton } from '../components/GoogleLoginButton'
 // import { FacebookLoginButton } from '../components/FacebookLoginButton'
@@ -120,8 +120,7 @@ const LoginForm = () => {
                         <Typography variant="overline" display="block" gutterBottom>
                             Social Login Providers
                         </Typography>
-                        <GoogleLoginButton />
-                        <FacebookLoginButton />
+
                     </Box>
                 </form>
             </Paper>
