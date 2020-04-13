@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next -p $PORT"
+    "start": "next start"
   },
   "engines": {
     "node": "12.x"

@@ -33,6 +33,13 @@ nextApp.prepare().then(async () => {
     initialiseAuthentication(app)
 
     app.use(cors())
+    
+    app.get('*', function (req, res, next) {
+        if (req.headers['x-forwarded-proto'] != 'https')
+            res.redirect('https://mypreferreddomain.com' + req.url)
+        else
+            next() /* Continue to other routes if we're not redirecting */
+    })
 
     app.get(
         '/admin-dashboard',
@@ -61,8 +68,11 @@ nextApp.prepare().then(async () => {
 
     await connectToDatabase()
 
-    app.listen(port, err => {
-        if (err) throw err
-        console.log(`> Ready on http://localhost:${port}`)
-    })
+    https.createServer({
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+    }, app)
+        .listen(3000, function () {
+            console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+        })
 })
