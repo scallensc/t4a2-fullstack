@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "engines": {
+    "node": "13.x"
+  },
   "dependencies": {
     "@material-ui/core": "^4.4.3",
     "await-to-js": "^2.1.1",
