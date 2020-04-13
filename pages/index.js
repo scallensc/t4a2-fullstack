@@ -19,7 +19,7 @@ const Home = () => (
                 <a href="/login">Go to login page</a>
             </div>
             <div className="row">
-                <a href="/blog">test material UI page</a>
+                <a href="/Blog">test material UI page</a>
             </div>
             <div className="row">
                 <a href="/customer-dashboard">Customer dashboard</a>

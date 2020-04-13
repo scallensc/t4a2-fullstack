@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import passport from 'passport'
 import passportGoogle from 'passport-google-oauth'
 import { to } from 'await-to-js'

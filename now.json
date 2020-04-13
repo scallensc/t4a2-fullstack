@@ -1,0 +1,14 @@
+{
+    "build": {
+        "env": {
+            "BASE_API_URL": "@BASE_API_URL",
+            "DB_CONNECTION_STRING": "@DB_CONNECTION_STRING",
+            "JWT_SECRET": "@JWT_SECRET",
+            "GOOGLE_CLIENT_ID": "@GOOGLE_CLIENT_ID",
+            "GOOGLE_CLIENT_SECRET": "@GOOGLE_CLIENT_SECRET",
+            "FACEBOOK_APP_ID": "@FACEBOOK_APP_ID",
+            "FACEBOOK_APP_SECRET": "@FACEBOOK_APP_SECRET",
+            "SERVER_API_URL": "@SERVER_API_URL"
+        }
+    }
+}

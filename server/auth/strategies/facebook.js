@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import passport from 'passport'
 import passportFacebook from 'passport-facebook'
 import { to } from 'await-to-js'

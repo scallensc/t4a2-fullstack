@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import passport from 'passport'
 import passportJWT from 'passport-jwt'
 import { to } from 'await-to-js'

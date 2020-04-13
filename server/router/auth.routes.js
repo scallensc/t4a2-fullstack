@@ -13,6 +13,7 @@ router.post('/login', async (req, res) => {
     const [err, user] = await to(getUserByEmail(email))
 
     const authenticationError = () => {
+        console.error('Authentication Error!')
         return res.status(500).json({ success: false, data: 'Authentication error!' })
     }
 
@@ -32,6 +33,9 @@ router.post('/login', async (req, res) => {
         console.error('Log in error', loginErr)
         return authenticationError()
     }
+    console.log(res.header())
+    console.log('Successful Login!')
+    console.log(req.params)
 
     return res
         .status(200)
@@ -48,8 +52,10 @@ router.post('/register', async (req, res) => {
     const { firstName, lastName, email, password } = req.body
 
     if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
+        console.log('Invalid email address')
         return res.status(500).json({ success: false, data: 'Enter a valid email address.' })
     } else if (password.length < 5 || password.length > 20) {
+        console.log('Invalid password length')
         return res.status(500).json({
             success: false,
             data: 'Password must be between 5 and 20 characters.'
@@ -68,6 +74,7 @@ router.post('/register', async (req, res) => {
     if (err) {
         return res.status(500).json({ success: false, data: 'Email is already taken' })
     }
+    console.log('Email already in use')
 
     const [loginErr, token] = await to(login(req, user))
 
@@ -75,6 +82,10 @@ router.post('/register', async (req, res) => {
         console.error(loginErr)
         return res.status(500).json({ success: false, data: 'Authentication error!' })
     }
+
+    console.log(res.header())
+    console.log('Successful Registration!')
+    console.log(req.params)
 
     return res
         .status(200)
