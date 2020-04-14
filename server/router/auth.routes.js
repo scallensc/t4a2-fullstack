@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ success: false, data: 'Authentication error!' })
     }
 
-    if (!(await getUserByEmail(email))) {
+    if ((await getUserByEmail(email))) {
         console.error('Email not found')
         return authenticationError()
     }
