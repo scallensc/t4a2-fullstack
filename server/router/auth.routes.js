@@ -1,5 +1,3 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
 import express from 'express'
 import { to } from 'await-to-js'
 import { verifyPassword, hashPassword, getRedirectUrl } from '../auth/utils'
@@ -13,16 +11,11 @@ router.post('/login', async (req, res) => {
     const [err, user] = await to(getUserByEmail(email))
 
     const authenticationError = () => {
-        console.error('Authentication Error!')
         return res.status(500).json({ success: false, data: 'Authentication error!' })
     }
 
-    if ((await getUserByEmail(email))) {
-        console.error('Email not found')
-        return authenticationError()
-    }
-
     if (!(await verifyPassword(password, user.password))) {
+        console.log('Error: Passwords do not match')
         console.error('Passwords do not match')
         return authenticationError()
     }
@@ -30,32 +23,33 @@ router.post('/login', async (req, res) => {
     const [loginErr, token] = await to(login(req, user))
 
     if (loginErr) {
+        console.log('Error: Log in error', loginErr)
         console.error('Log in error', loginErr)
         return authenticationError()
     }
-    console.log(res.header())
-    console.log('Successful Login!')
-    console.log(req.params)
 
-    return res
-        .status(200)
-        .cookie('jwt', token, {
-            httpOnly: true
-        })
-        .json({
-            success: true,
-            data: getRedirectUrl(user.role)
-        })
+    if (!res.status(500) && !loginErr) {
+        console.log('Success: Logged in')
+        return res
+            .status(200)
+            .cookie('jwt', token, {
+                httpOnly: true
+            })
+            .json({
+                success: true,
+                data: getRedirectUrl(user.role)
+            })
+    }
 })
 
 router.post('/register', async (req, res) => {
     const { firstName, lastName, email, password } = req.body
 
     if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
-        console.log('Invalid email address')
+        console.log('Error: Invalid email address')
         return res.status(500).json({ success: false, data: 'Enter a valid email address.' })
     } else if (password.length < 5 || password.length > 20) {
-        console.log('Invalid password length')
+        console.log('Error: Password length invalid')
         return res.status(500).json({
             success: false,
             data: 'Password must be between 5 and 20 characters.'
@@ -72,30 +66,30 @@ router.post('/register', async (req, res) => {
     )
 
     if (err) {
+        console.log('Error: Email in use')
         return res.status(500).json({ success: false, data: 'Email is already taken' })
     }
-    console.log('Email already in use')
 
     const [loginErr, token] = await to(login(req, user))
 
     if (loginErr) {
         console.error(loginErr)
+        console.log('Error: Authentication error!', loginErr)
         return res.status(500).json({ success: false, data: 'Authentication error!' })
     }
 
-    console.log(res.header())
-    console.log('Successful Registration!')
-    console.log(req.params)
-
-    return res
-        .status(200)
-        .cookie('jwt', token, {
-            httpOnly: true
-        })
-        .json({
-            success: true,
-            data: getRedirectUrl(user.role)
-        })
+    if (!err && !loginErr) {
+        console.log('Success: Registered and logged in')
+        return res
+            .status(200)
+            .cookie('jwt', token, {
+                httpOnly: true
+            })
+            .json({
+                success: true,
+                data: getRedirectUrl(user.role)
+            })
+    }
 })
 
 export default router

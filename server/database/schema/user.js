@@ -1,15 +1,13 @@
 import { model, Schema } from 'mongoose'
 
 const UserSchema = new Schema({
-  email: String,
-  password: String,
-  businessName: String,
-  firstName: String,
-  lastName: String,
-  displayName: String,
-  providerId: String,
-  provider: String,
-  role: String
+    email: String,
+    password: String,
+    firstName: String,
+    lastName: String,
+    providerId: String,
+    provider: String,
+    role: String
 })
 
 const UserModel = model('User', UserSchema)

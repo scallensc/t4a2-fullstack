@@ -10,10 +10,11 @@ async function createUser({
     role
 }) {
     return new Promise(async (resolve, reject) => {
-        const user = await UserModel.findOne({ email })
+        const err = await UserModel.findOne({ email })
 
-        if (user) {
+        if (err) {
             reject('Email is already in use')
+            return err
         }
 
         resolve(
