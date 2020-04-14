@@ -28,18 +28,16 @@ router.post('/login', async (req, res) => {
         return authenticationError()
     }
 
-    if (!res.status(500) && !loginErr) {
-        console.log('Success: Logged in')
-        return res
-            .status(200)
-            .cookie('jwt', token, {
-                httpOnly: true
-            })
-            .json({
-                success: true,
-                data: getRedirectUrl(user.role)
-            })
-    }
+    console.log('Success: Logged in')
+    return res
+        .status(200)
+        .cookie('jwt', token, {
+            httpOnly: true
+        })
+        .json({
+            success: true,
+            data: getRedirectUrl(user.role)
+        })
 })
 
 router.post('/register', async (req, res) => {
